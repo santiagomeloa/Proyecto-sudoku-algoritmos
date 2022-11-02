@@ -1,0 +1,17 @@
+Clonar el repositorio, una vez clonado crear un ambiente virtual de python con el siguiente comando:
+    python -m venv "nombre del ambiente virtual que desee"
+
+Una vez creado el ambiente virtual, debe ser activado mediante el comando:
+    "nombre_del_ambiente_virtual"\Scripts\activate
+Para desactivar el ambiente virtual solo es necesario ejecutar el comando:
+    deactivate
+
+Una vez activate debería aparecer "(env)" el comienzo de la linea de la terminal que se esté usando.
+El ambiente virtual servirá para descargar todas las librearias usadas durante nuestro proyecto, de esta forma
+todo quedará descargado dentro del ambiente virtual y no en el computador o maquina que se esté usando, todo
+esto para facilitar el control de versiones de diferentes proyectos dentro de un mismo ordenador.
+
+Una vez creado y activado el ambiente virtual, se deben instalar las diferentes librerias a usar durante el 
+todo el proyecto, estas librerias se encuentran en el archivo "requirements.txt". Para instalar todas las
+librerias de manera facil y rapida, debe ejecutar el siguiente comando:
+    pip install -m
