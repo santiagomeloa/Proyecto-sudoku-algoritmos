@@ -7,13 +7,14 @@ from functions import WIDTH, HEIGHT
 FPS = 60
 
 
-cuadricula = sprites.Cuadricula()
 
 def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
     pygame.display.set_caption('Sudoku')
+    background_image = functions.load_image("images/Cuadricula.png", WIDTH, HEIGHT)
     
+    cuadricula = sprites.Cuadricula()
 
     cuadricula.draw(screen)
 
@@ -23,7 +24,7 @@ def main():
     while True:
         clock.tick(FPS)
 
-        screen.blit()
+        screen.blit(background_image, (0, 0))
 
         #-------------detecting keyboards inputs-------------
         for event in pygame.event.get():
