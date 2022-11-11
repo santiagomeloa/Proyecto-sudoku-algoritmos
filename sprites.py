@@ -113,6 +113,13 @@ class Subcuadricula(pygame.sprite.Sprite):
                 if self.matriz[i][j].getCasilla()==num:
                     return True
         return False
+    
+    def casillitas(self):
+        lista=[] 
+        for i in range(self.filas):
+            for j in range(self.columnas):
+                lista.append(self.matriz[i][j])
+        return lista
 
     def draw(self, surface): #Método para mostrar el sprint en pantalla
                              # surface = pantalla
