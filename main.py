@@ -8,7 +8,7 @@ FPS = 60
 
 
 def main():
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    screen = pygame.display.set_mode((500, 600))
     clock = pygame.time.Clock()
     pygame.display.set_caption('Sudoku')
     
