@@ -2,6 +2,7 @@ import pygame, random
 from pygame.locals import *
 import functions
 from functions import WIDTH, HEIGHT
+from main import WHITE
 
 #class casilla---------------------------------------------------------
 class Casilla(pygame.sprite.Sprite):
@@ -9,8 +10,8 @@ class Casilla(pygame.sprite.Sprite):
         super().__init__()
 
         self._dato = dat
-        self.picture = 'images/Casilla.png' # localización de la imagen a ser usada para la clase
-        self.image = functions.load_image(self.picture, 1000, 1000) # convertir la imagen en un formato aceptado por pygame para ser tratado
+        self.picture = 'Imagenes/Casilla.png' # localización de la imagen a ser usada para la clase
+        self.image = functions.load_image(self.picture, 100, 100, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
         self.rect = self.image.get_rect()
 
         if pos[0] != None:
@@ -44,12 +45,14 @@ class Casilla(pygame.sprite.Sprite):
 
 #class subcuadricula--------------------------------------------------
 class Subcuadricula(pygame.sprite.Sprite):
-    def __init__(self, fila=3, columna=3, pos:tuple = (0, 0, 0, 0, 0)):
+    def __init__(self, fila=3, columna=3, pos:tuple = (0, 0, 0, 0, 0, 0)):
         super().__init__()
-
-        self.tam = 220
-        self.picture = 'images/Subcuadricula.png' # localización de la imagen a ser usada para la clase
-        self.image = functions.load_image(self.picture, self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
+        # 220
+        self.tamx = 330
+        self.tamy = 330
+        self.picture = 'Imagenes/BLUE.png' # localización de la imagen a ser usada para la clase
+        self.image = functions.load_image(self.picture, self.tamx, self.tamy) # convertir la imagen en un formato aceptado por pygame para ser tratado
+        self.image.fill(WHITE)
         self.rect = self.image.get_rect()
 
         if pos[0] != None:
@@ -86,14 +89,14 @@ class Subcuadricula(pygame.sprite.Sprite):
   
         self.contador = 1
         for f in range(self.filas):
-            lista=[] #crea la lista vacia donde guarda cada fila
+            lis=[] #crea la lista vacia donde guarda cada fila
             for c in range(self.columnas):
-                casilla = Casilla(0, self.pos_casillas[self.contador]) #crea un objeto casilla
-                self.casillas_group.add(casilla)
-                lista.append(casilla) #lo agrega a la lista de fila
+                cas = Casilla(0, self.pos_casillas[self.contador]) #crea un objeto casilla
+                self.casillas_group.add(cas)
+                lis.append(cas) #lo agrega a la lista de fila
                 self.contador += 1
-            self.matriz.append(lista)
-            # print(self.casillas_group.sprites(), end="\n")
+            self.matriz.append(lis)
+
             
            
     def prin(self):
@@ -120,25 +123,24 @@ class Subcuadricula(pygame.sprite.Sprite):
             for j in range(self.columnas):
                 lista.append(self.matriz[i][j])
         return lista
+    
 
     def draw(self, surface): #Método para mostrar el sprint en pantalla
                              # surface = pantalla
+        surface.blit(self.image, self.rect)
+        self.casillas_group.draw(surface)
         # for i in range(self.filas):
         #     for j in range(self.columnas):
         #         (self.matriz[i][j]).draw(surface)
-        
-        self.casillas_group.draw(surface)
-        # print(self.casillas_group.has(), end="\n")
 
-        surface.blit(self.image, self.rect)
         
 
 class Cuadricula(pygame.sprite.Sprite):
     def __init__(self, filas= 3, columnas= 3, pos:tuple = (0, 0)):
         super().__init__()
 
-        self.picture = 'images/Cuadricula.png' # localización de la imagen a ser usada para la clase
-        self.image = functions.load_image(self.picture, WIDTH/2, WIDTH/2, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
+        self.picture = 'Imagenes/BLACK.png' # localización de la imagen a ser usada para la clase
+        self.image = functions.load_image(self.picture, WIDTH/1.8, WIDTH/1.8, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
         self.rect = self.image.get_rect()
 
         self.rect.centerx = pos[0]
@@ -175,7 +177,10 @@ class Cuadricula(pygame.sprite.Sprite):
 
     def draw(self, surface): #Método para mostrar el sprint en pantalla
                              # surface = pantalla
-        
-        self.subcuadricula_group.draw(surface)
+
         surface.blit(self.image, self.rect)
+        for i in range(self.filas):
+            for j in range(self.columnas):
+                (self.matriz[i][j]).draw(surface)
+
  

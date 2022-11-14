@@ -12,11 +12,12 @@ def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
     pygame.display.set_caption('Sudoku')
-    background_image = functions.load_image("images/Cuadricula.png", WIDTH/2, HEIGHT/2, True)
+    background_image = functions.load_image("Imagenes/Fondo.png", WIDTH/2, HEIGHT/2, True)
     
     cuadricula = sprites.Cuadricula(3, 3, (WIDTH/2, HEIGHT/2))
 
-    # c = sprites.Casilla()
+    # c = sprites.Casilla(0, (WIDTH/2, None, None, None, None, None))
+    # sub = sprites.Subcuadricula(3,3,(None, None, None, None, WIDTH/2, HEIGHT/2))
 
 
     #---------------------------------------------------------------------------------------------------------
@@ -26,10 +27,11 @@ def main():
         clock.tick(FPS)
         screen.fill(WHITE)
 
-        # screen.blit(background_image, (0, 0)
+        screen.blit(background_image, (0, 0))
 
-        # c.draw(screen)
         cuadricula.draw(screen)
+        # sub.draw(screen)
+        # c.draw(screen)
         #-------------detecting keyboards inputs-------------
         for event in pygame.event.get():
             if event.type == QUIT:
