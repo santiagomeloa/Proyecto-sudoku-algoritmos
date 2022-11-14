@@ -1,17 +1,41 @@
 import pygame, random
 from pygame.locals import *
 import functions
-from functions import WIDTH, HEIGHT
-from main import WHITE
+from functions import WIDTH, HEIGHT, WHITE
+
+
+
+#Clase numeros
+class Numbers(pygame.sprite.Sprite):
+    def __init__(self, image, x, y, number):
+        super().__init__()
+
+        self.image = pygame.transform.scale(image, (150, 150))
+        self.pos_x = x
+        self.pos_y = y
+        self.number = number
+        self.rect = self.image.get_rect()
+        self.rect.topleft = ((self.pos_x, self.pos_y))
+
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
+    
+    def checkForInput(self, position):
+	    if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+		    print(self.number)
+
+
+
 
 #class casilla---------------------------------------------------------
 class Casilla(pygame.sprite.Sprite):
     def __init__(self, dat:int= 0, pos:tuple= (0, 0, 0, 0, 0, 0)):
         super().__init__()
 
+        self.tam = 128
         self._dato = dat
         self.picture = 'Imagenes/Casilla.png' # localización de la imagen a ser usada para la clase
-        self.image = functions.load_image(self.picture, 100, 100, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
+        self.image = functions.load_image(self.picture, self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
         self.rect = self.image.get_rect()
 
         if pos[0] != None:
@@ -48,10 +72,9 @@ class Subcuadricula(pygame.sprite.Sprite):
     def __init__(self, fila=3, columna=3, pos:tuple = (0, 0, 0, 0, 0, 0)):
         super().__init__()
         # 220
-        self.tamx = 330
-        self.tamy = 330
+        self.tam = 350
         self.picture = 'Imagenes/BLUE.png' # localización de la imagen a ser usada para la clase
-        self.image = functions.load_image(self.picture, self.tamx, self.tamy) # convertir la imagen en un formato aceptado por pygame para ser tratado
+        self.image = functions.load_image(self.picture, self.tam, self.tam) # convertir la imagen en un formato aceptado por pygame para ser tratado
         self.image.fill(WHITE)
         self.rect = self.image.get_rect()
 

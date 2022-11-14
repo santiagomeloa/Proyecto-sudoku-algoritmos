@@ -1,6 +1,8 @@
 import subprocess, pygame, platform, ctypes
 from pygame.locals import *
 
+WHITE = (255, 255, 255)
+
 sistema = platform.system() #Obtiene el sistema operativo del pc desde donde se esté ejecutando
 
 def screen_size(): # Obtine la resolución de la pantalla dependiendo del sistema operativo
