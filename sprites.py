@@ -9,9 +9,10 @@ class Casilla(pygame.sprite.Sprite):
     def __init__(self, dat:int= 0, pos:tuple= (0, 0, 0, 0, 0, 0)):
         super().__init__()
 
+        self.tam = 128
         self._dato = dat
         self.picture = 'Imagenes/Casilla.png' # localización de la imagen a ser usada para la clase
-        self.image = functions.load_image(self.picture, 100, 100, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
+        self.image = functions.load_image(self.picture, self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
         self.rect = self.image.get_rect()
 
         if pos[0] != None:
@@ -48,10 +49,9 @@ class Subcuadricula(pygame.sprite.Sprite):
     def __init__(self, fila=3, columna=3, pos:tuple = (0, 0, 0, 0, 0, 0)):
         super().__init__()
         # 220
-        self.tamx = 330
-        self.tamy = 330
+        self.tam = 350
         self.picture = 'Imagenes/BLUE.png' # localización de la imagen a ser usada para la clase
-        self.image = functions.load_image(self.picture, self.tamx, self.tamy) # convertir la imagen en un formato aceptado por pygame para ser tratado
+        self.image = functions.load_image(self.picture, self.tam, self.tam) # convertir la imagen en un formato aceptado por pygame para ser tratado
         self.image.fill(WHITE)
         self.rect = self.image.get_rect()
 
