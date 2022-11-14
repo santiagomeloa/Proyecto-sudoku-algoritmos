@@ -1,8 +1,31 @@
 import pygame, random
 from pygame.locals import *
 import functions
-from functions import WIDTH, HEIGHT
-from main import WHITE
+from functions import WIDTH, HEIGHT, WHITE
+
+
+
+#Clase numeros
+class Numbers(pygame.sprite.Sprite):
+    def __init__(self, image, x, y, number):
+        super().__init__()
+
+        self.image = pygame.transform.scale(image, (150, 150))
+        self.pos_x = x
+        self.pos_y = y
+        self.number = number
+        self.rect = self.image.get_rect()
+        self.rect.topleft = ((self.pos_x, self.pos_y))
+
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
+    
+    def checkForInput(self, position):
+	    if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+		    print(self.number)
+
+
+
 
 #class casilla---------------------------------------------------------
 class Casilla(pygame.sprite.Sprite):
