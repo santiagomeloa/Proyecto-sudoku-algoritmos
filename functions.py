@@ -25,7 +25,7 @@ def screen_size(): # Obtine la resolución de la pantalla dependiendo del sistem
 
 #-------Tamaño de la pantalla------
 WIDTH = screen_size()[0]
-HEIGHT = screen_size()[1]
+HEIGHT = screen_size()[1] - (screen_size()[1]*0.06)
 
 
 def load_image(filename, width=None, height=None, transparent=False):   #covierte las imagenes a el formato aceptado por pygame y le da las dimenciones deceadas,

@@ -32,7 +32,7 @@ class Casilla(pygame.sprite.Sprite):
     def __init__(self, dat:int= 0, pos:tuple= (0, 0, 0, 0, 0, 0)):
         super().__init__()
 
-        self.tam = 128
+        self.tam = WIDTH/20.2
         self._dato = dat
         self.picture = 'Imagenes/Casilla.png' # localización de la imagen a ser usada para la clase
         self.image = functions.load_image(self.picture, self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
@@ -52,12 +52,10 @@ class Casilla(pygame.sprite.Sprite):
             self.rect.centery = pos[5]
         
 
-    @property
-    def dato(self):
+    def get_dato(self):
         return self._dato
 
-    @dato.setter
-    def dato(self, dato):
+    def set_dato(self, dato:int):
         self._dato = dato
  
     def printc(self):
@@ -72,9 +70,9 @@ class Subcuadricula(pygame.sprite.Sprite):
     def __init__(self, fila=3, columna=3, pos:tuple = (0, 0, 0, 0, 0, 0)):
         super().__init__()
         # 220
-        self.tam = 350
-        self.picture = 'Imagenes/BLUE.png' # localización de la imagen a ser usada para la clase
-        self.image = functions.load_image(self.picture, self.tam, self.tam) # convertir la imagen en un formato aceptado por pygame para ser tratado
+        self.tam = WIDTH/7.2
+        self.picture = 'Imagenes/Subcuadricula.png' # localización de la imagen a ser usada para la clase
+        self.image = functions.load_image(self.picture, self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
         self.image.fill(WHITE)
         self.rect = self.image.get_rect()
 
@@ -126,9 +124,15 @@ class Subcuadricula(pygame.sprite.Sprite):
         for i in range(self.filas):
             for j in range(self.columnas):
                 self.matriz[i][j].printc()
-            print("\n")
-           
-           
+            print("\t")
+    
+    def get_dato(self, x, y):
+        return self.matriz[x][y].get_dato()
+
+    def set_dato(self, num:int, x:int, y:int):
+        self.matriz[x][y].set_dato(num)
+      
+
     def insert(self, fila, columna, num):
         c = self.matriz[fila][columna]
         c.setCasilla(num)
@@ -162,12 +166,14 @@ class Cuadricula(pygame.sprite.Sprite):
     def __init__(self, filas= 3, columnas= 3, pos:tuple = (0, 0)):
         super().__init__()
 
-        self.picture = 'Imagenes/BLACK.png' # localización de la imagen a ser usada para la clase
-        self.image = functions.load_image(self.picture, WIDTH/1.8, WIDTH/1.8, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
+        self.tam = WIDTH/2.4
+        self.picture = 'Imagenes/Cuadricula.png' # localización de la imagen a ser usada para la clase
+        self.image = functions.load_image(self.picture, self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
         self.rect = self.image.get_rect()
 
         self.rect.centerx = pos[0]
         self.rect.centery = pos[1]
+        self.rect.top = 0
 
         self.filas = filas
         self.columnas = columnas
@@ -198,6 +204,24 @@ class Cuadricula(pygame.sprite.Sprite):
                 self.contador += 1
             self.matriz.append(lis)
 
+    def prin(self):
+        for i in range(self.filas):
+            for j in range(self.columnas):
+                self.matriz[i][j].prin()
+            print("\n")
+    
+    def get_dato(self, x:int, y:int, xs:int, ys:int):
+        return self.matriz[x][y].get_dato(xs, ys)
+
+    def set_dato(self, num:int, x:int, y:int, xs:int, ys:int):
+        self.matriz[x][y].set_dato(num, xs, ys)
+
+    def fill_sudoku(self):
+        random_pos = (random.choice([x for x in range(self.filas)]), random.choice([y for y in range(self.columnas)]))
+
+        self.set_dato(random.choice([d for d in range(1, 10)]), random_pos[0], random_pos[1], random_pos[1], random_pos[1])
+        print(self.get_dato(random_pos[0], random_pos[1], random_pos[0], random_pos[1]))
+
     def draw(self, surface): #Método para mostrar el sprint en pantalla
                              # surface = pantalla
 
@@ -205,5 +229,7 @@ class Cuadricula(pygame.sprite.Sprite):
         for i in range(self.filas):
             for j in range(self.columnas):
                 (self.matriz[i][j]).draw(surface)
+
+    
 
  
