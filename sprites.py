@@ -1,7 +1,7 @@
 import pygame, random
 from pygame.locals import *
 import functions
-from functions import WIDTH, HEIGHT, WHITE
+from functions import WIDTH, HEIGHT
 
 
 
@@ -22,7 +22,7 @@ class Numbers(pygame.sprite.Sprite):
     
     def checkForInput(self, position):
 	    if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-		    print(self.number)
+		    pass
 
 
 
@@ -137,12 +137,12 @@ class Subcuadricula(pygame.sprite.Sprite):
         c = self.matriz[fila][columna]
         c.setCasilla(num)
        
-    def search(self, num):
+    def revisar_sub(self, num):
         for i in range(self.filas):
             for j in range(self.columnas):
                 if self.matriz[i][j].getCasilla()==num:
-                    return True
-        return False
+                    return False
+        return True
     
     def casillitas(self):
         lista=[] 
@@ -220,7 +220,7 @@ class Cuadricula(pygame.sprite.Sprite):
         random_pos = (random.choice([x for x in range(self.filas)]), random.choice([y for y in range(self.columnas)]))
 
         self.set_dato(random.choice([d for d in range(1, 10)]), random_pos[0], random_pos[1], random_pos[1], random_pos[1])
-        print(self.get_dato(random_pos[0], random_pos[1], random_pos[0], random_pos[1]))
+        print(self.get_dato(random_pos[0], random_pos[1], random_pos[0], random_pos[1])) 
 
     def draw(self, surface): #Método para mostrar el sprint en pantalla
                              # surface = pantalla
@@ -229,7 +229,40 @@ class Cuadricula(pygame.sprite.Sprite):
         for i in range(self.filas):
             for j in range(self.columnas):
                 (self.matriz[i][j]).draw(surface)
-
+                
+    def revisar_fila (self, pos_cua, pos_sub, num):
+        for i in range(3):
+            sub_cuadricula=self.matriz[pos_cua][i]
+            for j in range(3):
+                
+                if sub_cuadricula.get_dato(pos_sub, j) == num:
+                    return False
+        return True
     
+    def revisar_columna(self, pos_cua, pos_sub, num):
+        for i in range(3):
+            sub_cuadricula=self.matriz[i][pos_cua]
+            for j in range(3):
+            
+                if sub_cuadricula.get_dato(j, pos_sub) == num:
+                    return False
+        return True
+                
+    def revisar_sub_cua(self, posx, posy, num):
+        return self.matriz[posx][posy].revisar_sub(num)
 
+    def fill_fila(self, pos_cuax, pos_subx):
+        lista = [1,2,3,4,5,6,7,8,9]
+        for i in range(self.columnas):
+            sub_cuadricula=self.matriz[pos_cuax][i]
+            for j in range(self.columnas):
+                num = lista.pop(0)
+                while not revisar_columna(i, j, num) and not revisar_sub_cua(pos_cuax, i):
+                    lista.append(num)
+                    num = lista.pop(0)
+                    
+                sub_cuadricula.set_dato(num, pos_subx, j)
+                
+    
+    #def fill_columna():
  
