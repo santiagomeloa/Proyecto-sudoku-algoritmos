@@ -24,15 +24,15 @@ def main():
     cuadricula = Cuadricula(3, 3, (WIDTH/2, HEIGHT/2))
 
     #Objetos Numero
-    one = Numbers(pygame.image.load('Imagenes/one.png').convert_alpha(), 0, 0, "1")
-    two = Numbers(pygame.image.load('Imagenes/two.png').convert_alpha(), 150, 0, "2")
-    three = Numbers(pygame.image.load('Imagenes/three.png').convert_alpha(), 300, 0, "3")
-    four = Numbers(pygame.image.load('Imagenes/four.png').convert_alpha(), 0, 150, "4")
-    five = Numbers(pygame.image.load('Imagenes/five.png').convert_alpha(), 150, 150, "5")
-    six = Numbers(pygame.image.load('Imagenes/six.png').convert_alpha(), 300, 150, "6")
-    seven = Numbers(pygame.image.load('Imagenes/seven.png').convert_alpha(), 0, 300, "7")
-    eight = Numbers(pygame.image.load('Imagenes/eight.png').convert_alpha(), 150, 300, "8")
-    nine = Numbers(pygame.image.load('Imagenes/nine.png').convert_alpha(), 300, 300, "9")
+    one = Numbers(pygame.image.load('Imagenes/one.png').convert_alpha(), 500, (HEIGHT/1.134), "1")
+    two = Numbers(pygame.image.load('Imagenes/two.png').convert_alpha(), 600, (HEIGHT/1.134), "2")
+    three = Numbers(pygame.image.load('Imagenes/three.png').convert_alpha(), 700, (HEIGHT/1.134), "3")
+    four = Numbers(pygame.image.load('Imagenes/four.png').convert_alpha(), 800, (HEIGHT/1.134), "4")
+    five = Numbers(pygame.image.load('Imagenes/five.png').convert_alpha(), 900, (HEIGHT/1.134), "5")
+    six = Numbers(pygame.image.load('Imagenes/six.png').convert_alpha(), 1000, (HEIGHT/1.134), "6")
+    seven = Numbers(pygame.image.load('Imagenes/seven.png').convert_alpha(), 1100, (HEIGHT/1.134), "7")
+    eight = Numbers(pygame.image.load('Imagenes/eight.png').convert_alpha(), 1200, (HEIGHT/1.134), "8")
+    nine = Numbers(pygame.image.load('Imagenes/nine.png').convert_alpha(), 1300, (HEIGHT/1.134), "9")
 
     numbers_group.add(one)
     numbers_group.add(two)
@@ -56,7 +56,6 @@ def main():
 
         cuadricula.draw(screen)
         numbers_group.draw(screen)
-        cuadricula.fill_sudoku()
 
 
         #-------------detecting keyboards inputs-------------
@@ -69,15 +68,12 @@ def main():
                     sys.exit(0)
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                one.checkForInput(pygame.mouse.get_pos())
-                two.checkForInput(pygame.mouse.get_pos())
-                three.checkForInput(pygame.mouse.get_pos())
-                four.checkForInput(pygame.mouse.get_pos())
-                five.checkForInput(pygame.mouse.get_pos())
-                six.checkForInput(pygame.mouse.get_pos())
-                seven.checkForInput(pygame.mouse.get_pos())
-                eight.checkForInput(pygame.mouse.get_pos())
-                nine.checkForInput(pygame.mouse.get_pos())
+
+                num_list = {one, two, three, four, five, six, seven, eight, nine}
+                for num in num_list:
+                    val = num.checkForInput(pygame.mouse.get_pos())
+                    if(val != 0):
+                        break
 
         pygame.display.flip() #Actualizar contenido en pantalla
 
