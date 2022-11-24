@@ -309,3 +309,6 @@ class Cuadricula(pygame.sprite.Sprite):
                 
     
     #def fill_columna():
+   def generador():
+    arr = np.array(list(str(generators.random_sudoku(avg_rank=100))))
+    mat = arr.reshape(9,9)
