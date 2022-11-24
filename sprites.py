@@ -2,6 +2,8 @@ import pygame, random
 from pygame.locals import *
 import functions
 from functions import HEIGHT, WHITE, WIDTH
+from dokusan import generators
+import numpy as np
 
 
 #Clase numeros botones
@@ -27,15 +29,35 @@ class Numbers(pygame.sprite.Sprite):
 
 #Clase numeros casillas
 class Numbers_casillas(pygame.sprite.Sprite):
-    def __init__(self, image, x, y, number):
+    def __init__(self, x, y, number):
         super().__init__()
-
-        self.image = pygame.transform.scale(image, (80, 80))
+        
+        self.tam = WIDTH/25
+        self.number = number
+        self.num_images = {
+            0:"Imagenes/WHITE.png",
+            1:"Imagenes/1.png",
+            2:"Imagenes/2.png",
+            3:"Imagenes/3.png",
+            4:"Imagenes/4.png",
+            5:"Imagenes/5.png",
+            6:"Imagenes/6.png",
+            7:"Imagenes/7.png",
+            8:"Imagenes/8.png",
+            9:"Imagenes/9.png",
+        }
+        self.image = functions.load_image(self.num_images[self.number], self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
         self.pos_x = x
         self.pos_y = y
-        self.number = number
         self.rect = self.image.get_rect()
         self.rect.topleft = ((self.pos_x, self.pos_y))
+
+    def get_number(self):
+        return self.number
+
+    def set_number(self, num:int):
+        self.number = num
+        self.image = functions.load_image(self.num_images[self.number], self.tam, self.tam, True)
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
@@ -43,11 +65,10 @@ class Numbers_casillas(pygame.sprite.Sprite):
 
 #class casilla---------------------------------------------------------
 class Casilla(pygame.sprite.Sprite):
-    def __init__(self, dat:int= 0, pos:tuple= (0, 0, 0, 0, 0, 0)):
+    def __init__(self, dat:int= 2, pos:tuple= (0, 0, 0, 0, 0, 0)):
         super().__init__()
 
         self.tam = WIDTH/20.2
-        self._dato = dat
         self.picture = 'Imagenes/Casilla.png' # localización de la imagen a ser usada para la clase
         self.image = functions.load_image(self.picture, self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
         self.rect = self.image.get_rect()
@@ -65,12 +86,13 @@ class Casilla(pygame.sprite.Sprite):
         if pos[5] != None:
             self.rect.centery = pos[5]
         
+        self._dato = Numbers_casillas(self.rect.centerx, self.rect.centery, dat)
 
     def get_dato(self):
-        return self._dato
+        return self._dato.get_number()
 
     def set_dato(self, dato:int):
-        self._dato = dato
+        self._dato.set_number(dato)
  
     def printc(self):
         print(self._dato, end= " ") #imprime el número y sigue en la misma linea
@@ -78,36 +100,39 @@ class Casilla(pygame.sprite.Sprite):
     def draw(self, surface): #Método para mostrar el sprint en pantalla
                              # surface = pantalla
         surface.blit(self.image, self.rect)
+        self._dato.draw(surface)
 
     def put_number(self, position, number):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            if(number == 1):
-                one = Numbers_casillas(pygame.image.load('Imagenes/1.png').convert_alpha(), self.pos_x, self.pos_y, "1")
-                one.draw(screen)
-            if(number == 2):
-                two = Numbers_casillas(pygame.image.load('Imagenes/2.png').convert_alpha(), self.pos_x, self.pos_y, "2")
-                two.draw(screen)
-            if(number == 3):
-                three = Numbers_casillas(pygame.image.load('Imagenes/3.png').convert_alpha(), self.pos_x, self.pos_y, "3")
-                three.draw(screen)
-            if(number == 4):
-                four = Numbers_casillas(pygame.image.load('Imagenes/4.png').convert_alpha(), self.pos_x, self.pos_y, "4")
-                four.draw(screen)
-            if(number == 5):
-                five = Numbers_casillas(pygame.image.load('Imagenes/5.png').convert_alpha(), self.pos_x, self.pos_y, "5")
-                five.draw(screen)
-            if(number == 6):
-                six = Numbers_casillas(pygame.image.load('Imagenes/6.png').convert_alpha(), self.pos_x, self.pos_y, "6")
-                six.draw(screen)
-            if(number == 7):
-                seven = Numbers_casillas(pygame.image.load('Imagenes/7.png').convert_alpha(), self.pos_x, self.pos_y, "7")
-                seven.draw(screen)
-            if(number == 8):
-                eight = Numbers_casillas(pygame.image.load('Imagenes/8.png').convert_alpha(), self.pos_x, self.pos_y, "8")
-                eight.draw(screen)
-            if(number == 9):
-                nine = Numbers_casillas(pygame.image.load('Imagenes/9.png').convert_alpha(), self.pos_x, self.pos_y, "9")
-                nine.draw(screen)
+            self.set_dato(number)
+
+            # if(number == 1):
+            #     one = Numbers_casillas(pygame.image.load('Imagenes/1.png').convert_alpha(), self.pos_x, self.pos_y, "1")
+            #     one.draw(screen)
+            # if(number == 2):
+            #     two = Numbers_casillas(pygame.image.load('Imagenes/2.png').convert_alpha(), self.pos_x, self.pos_y, "2")
+            #     two.draw(screen)
+            # if(number == 3):
+            #     three = Numbers_casillas(pygame.image.load('Imagenes/3.png').convert_alpha(), self.pos_x, self.pos_y, "3")
+            #     three.draw(screen)
+            # if(number == 4):
+            #     four = Numbers_casillas(pygame.image.load('Imagenes/4.png').convert_alpha(), self.pos_x, self.pos_y, "4")
+            #     four.draw(screen)
+            # if(number == 5):
+            #     five = Numbers_casillas(pygame.image.load('Imagenes/5.png').convert_alpha(), self.pos_x, self.pos_y, "5")
+            #     five.draw(screen)
+            # if(number == 6):
+            #     six = Numbers_casillas(pygame.image.load('Imagenes/6.png').convert_alpha(), self.pos_x, self.pos_y, "6")
+            #     six.draw(screen)
+            # if(number == 7):
+            #     seven = Numbers_casillas(pygame.image.load('Imagenes/7.png').convert_alpha(), self.pos_x, self.pos_y, "7")
+            #     seven.draw(screen)
+            # if(number == 8):
+            #     eight = Numbers_casillas(pygame.image.load('Imagenes/8.png').convert_alpha(), self.pos_x, self.pos_y, "8")
+            #     eight.draw(screen)
+            # if(number == 9):
+            #     nine = Numbers_casillas(pygame.image.load('Imagenes/9.png').convert_alpha(), self.pos_x, self.pos_y, "9")
+            #     nine.draw(screen)
 
 #class subcuadricula--------------------------------------------------
 class Subcuadricula(pygame.sprite.Sprite):
@@ -199,10 +224,9 @@ class Subcuadricula(pygame.sprite.Sprite):
     def draw(self, surface): #Método para mostrar el sprint en pantalla
                              # surface = pantalla
         surface.blit(self.image, self.rect)
-        self.casillas_group.draw(surface)
-        # for i in range(self.filas):
-        #     for j in range(self.columnas):
-        #         (self.matriz[i][j]).draw(surface)
+        for i in range(self.filas):
+            for j in range(self.columnas):
+                (self.matriz[i][j]).draw(surface)
 
         
 
@@ -214,6 +238,7 @@ class Cuadricula(pygame.sprite.Sprite):
         self.picture = 'Imagenes/Cuadricula.png' # localización de la imagen a ser usada para la clase
         self.image = functions.load_image(self.picture, self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
         self.rect = self.image.get_rect()
+        self.mat_rand = np.array(list(str(generators.random_sudoku(avg_rank=100)))).reshape(9,9).astype(np.int)
 
         self.rect.centerx = pos[0]
         self.rect.centery = pos[1]
@@ -306,8 +331,7 @@ class Cuadricula(pygame.sprite.Sprite):
                     num = lista.pop(0)
                     
                 sub_cuadricula.set_dato(num, pos_subx, j)
-                
-    
+
     def posible_numero(self, fila, columna, numero):
         for i in range(0, 9):
             if self.mat_rand[fila][i] == numero:
@@ -336,4 +360,21 @@ class Cuadricula(pygame.sprite.Sprite):
                             self.mat_rand[filas][columnas] = numero
                             self.sudoku_solver()
                             self.mat_rand[filas][columnas] = 0
-                    return 
+                    return
+                
+    
+    def generador(self):
+        xs = 0
+        ys = 0
+        for f in range(9):
+            for c in range(9):
+                self.set_dato(self.mat_rand[f][c], f%3, c%3, xs, ys)
+                if ys == 2:
+                    ys = 0
+                else:
+                    ys += 1
+
+            if xs == 2:
+                xs = 0
+            else:
+                xs += 1
