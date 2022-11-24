@@ -308,7 +308,32 @@ class Cuadricula(pygame.sprite.Sprite):
                 sub_cuadricula.set_dato(num, pos_subx, j)
                 
     
-    #def fill_columna():
-   def generador():
-    arr = np.array(list(str(generators.random_sudoku(avg_rank=100))))
-    mat = arr.reshape(9,9)
+    def posible_numero(self, fila, columna, numero):
+        for i in range(0, 9):
+            if self.mat_rand[fila][i] == numero:
+                return False
+
+        for i in range(0, 9):
+            if self.mat_rand[i][columna] == numero:
+                return False
+
+        x_sub = (fila//3)*3
+        y_sub = (columna//3)*3
+
+        for i in range(0,3):
+            for j in range(0,3):
+                if self.mat_rand[x_sub + i][y_sub + j] == numero:
+                    return False
+
+        return True
+
+    def sudoku_solver(self):
+        for filas in range(0,9):
+            for columnas in range(0,9):
+                if self.mat_rand[filas][columnas] == 0:
+                    for numero in range(1, 10):
+                        if(self.posible_numero(filas, columnas, numero)):
+                            self.mat_rand[filas][columnas] = numero
+                            self.sudoku_solver()
+                            self.mat_rand[filas][columnas] = 0
+                    return 
