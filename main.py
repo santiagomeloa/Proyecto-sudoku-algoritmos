@@ -22,6 +22,7 @@ def main():
     numbers_group = pygame.sprite.Group()
     
     cuadricula = Cuadricula(3, 3, (WIDTH/2, HEIGHT/2))
+    cuadricula.generador()
 
     #Objetos Numero
     one = Numbers(pygame.image.load('Imagenes/one.png').convert_alpha(), 500, (HEIGHT/1.134), "1")
