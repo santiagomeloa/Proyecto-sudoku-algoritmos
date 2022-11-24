@@ -1,16 +1,15 @@
 import pygame, random
 from pygame.locals import *
 import functions
-from functions import WIDTH, HEIGHT
+from functions import HEIGHT, WHITE, WIDTH
 
 
-
-#Clase numeros
+#Clase numeros botones
 class Numbers(pygame.sprite.Sprite):
     def __init__(self, image, x, y, number):
         super().__init__()
 
-        self.image = pygame.transform.scale(image, (150, 150))
+        self.image = pygame.transform.scale(image, (100, 100))
         self.pos_x = x
         self.pos_y = y
         self.number = number
@@ -21,10 +20,25 @@ class Numbers(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
     
     def checkForInput(self, position):
-	    if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-		    pass
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+            return self.number
+        else:
+            return 0
 
+#Clase numeros casillas
+class Numbers_casillas(pygame.sprite.Sprite):
+    def __init__(self, image, x, y, number):
+        super().__init__()
 
+        self.image = pygame.transform.scale(image, (80, 80))
+        self.pos_x = x
+        self.pos_y = y
+        self.number = number
+        self.rect = self.image.get_rect()
+        self.rect.topleft = ((self.pos_x, self.pos_y))
+
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
 
 
 #class casilla---------------------------------------------------------
@@ -65,11 +79,41 @@ class Casilla(pygame.sprite.Sprite):
                              # surface = pantalla
         surface.blit(self.image, self.rect)
 
+    def put_number(self, position, number):
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+            if(number == 1):
+                one = Numbers_casillas(pygame.image.load('Imagenes/1.png').convert_alpha(), self.pos_x, self.pos_y, "1")
+                one.draw(screen)
+            if(number == 2):
+                two = Numbers_casillas(pygame.image.load('Imagenes/2.png').convert_alpha(), self.pos_x, self.pos_y, "2")
+                two.draw(screen)
+            if(number == 3):
+                three = Numbers_casillas(pygame.image.load('Imagenes/3.png').convert_alpha(), self.pos_x, self.pos_y, "3")
+                three.draw(screen)
+            if(number == 4):
+                four = Numbers_casillas(pygame.image.load('Imagenes/4.png').convert_alpha(), self.pos_x, self.pos_y, "4")
+                four.draw(screen)
+            if(number == 5):
+                five = Numbers_casillas(pygame.image.load('Imagenes/5.png').convert_alpha(), self.pos_x, self.pos_y, "5")
+                five.draw(screen)
+            if(number == 6):
+                six = Numbers_casillas(pygame.image.load('Imagenes/6.png').convert_alpha(), self.pos_x, self.pos_y, "6")
+                six.draw(screen)
+            if(number == 7):
+                seven = Numbers_casillas(pygame.image.load('Imagenes/7.png').convert_alpha(), self.pos_x, self.pos_y, "7")
+                seven.draw(screen)
+            if(number == 8):
+                eight = Numbers_casillas(pygame.image.load('Imagenes/8.png').convert_alpha(), self.pos_x, self.pos_y, "8")
+                eight.draw(screen)
+            if(number == 9):
+                nine = Numbers_casillas(pygame.image.load('Imagenes/9.png').convert_alpha(), self.pos_x, self.pos_y, "9")
+                nine.draw(screen)
+
 #class subcuadricula--------------------------------------------------
 class Subcuadricula(pygame.sprite.Sprite):
     def __init__(self, fila=3, columna=3, pos:tuple = (0, 0, 0, 0, 0, 0)):
         super().__init__()
-        # 220
+        # 220Numbers
         self.tam = WIDTH/7.2
         self.picture = 'Imagenes/Subcuadricula.png' # localización de la imagen a ser usada para la clase
         self.image = functions.load_image(self.picture, self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
@@ -265,4 +309,3 @@ class Cuadricula(pygame.sprite.Sprite):
                 
     
     #def fill_columna():
- 
