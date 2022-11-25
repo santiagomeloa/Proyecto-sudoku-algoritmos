@@ -43,3 +43,8 @@ def load_image(filename, width=None, height=None, transparent=False):   #coviert
         imagen.set_colorkey(color[0, 0], RLEACCEL)
 
     return imagen
+
+def countdown(num_of_secs):
+    while num_of_secs:
+        m, s = divmod(num_of_secs, 60)
+        min_sec_format = '{:02d}:{:02d}'.format(m, s)
