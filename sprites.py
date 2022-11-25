@@ -36,15 +36,15 @@ class Numbers_casillas(pygame.sprite.Sprite):
         self.number = number
         self.num_images = {
             0:"Imagenes/WHITE.png",
-            1:"Imagenes/one.png",
-            2:"Imagenes/two.png",
-            3:"Imagenes/three.png",
-            4:"Imagenes/four.png",
-            5:"Imagenes/five.png",
-            6:"Imagenes/six.png",
-            7:"Imagenes/seven.png",
-            8:"Imagenes/eight.png",
-            9:"Imagenes/nine.png",
+            1:"Imagenes/1.png",
+            2:"Imagenes/2.png",
+            3:"Imagenes/3.png",
+            4:"Imagenes/4.png",
+            5:"Imagenes/5.png",
+            6:"Imagenes/6.png",
+            7:"Imagenes/7.png",
+            8:"Imagenes/8.png",
+            9:"Imagenes/9.png",
         }
         self.image = functions.load_image(self.num_images[self.number], self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
         self.rect = self.image.get_rect()
