@@ -2,12 +2,12 @@ import sys
 import pygame, random
 from pygame.locals import *
 from functions import WHITE, WIDTH, HEIGHT, load_image
-from sprites import Cuadricula, Numbers
+from sprites import Cuadricula, Numbers, Words
 
 
 FPS = 60
 
-
+color = (100,100,50)
 
 def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -15,14 +15,17 @@ def main():
     pygame.display.set_caption('Sudoku')
     background_image = load_image("Imagenes/Fondo.png", WIDTH, HEIGHT)
     load_screen = True
-
+    game = True
+    global vidas
     global set_number 
-
     set_number = 0
+    vidas = 3
 
     #-------------OBJETOS------------
 
     numbers_group = pygame.sprite.Group()
+
+    vidas_text = Words(f"vidas: {vidas}", 30, color, (WIDTH/6, HEIGHT/20))
     
     cuadricula = Cuadricula(3, 3, (WIDTH/2, HEIGHT/2))
     cuadricula.generador()
@@ -56,7 +59,7 @@ def main():
     #---------------------------------------------------------------------------------------------------------
     #---------------------------------------------------------------------------------------------------------
     #---------------------------------------------------------------------------------------------------------
-    while True:
+    while game:
         clock.tick(FPS)
         screen.fill(WHITE)
         
@@ -64,12 +67,7 @@ def main():
 
         cuadricula.draw(screen)
         numbers_group.draw(screen)
-        # numberrr.draw(screen)
-
-        # if load_screen:
-        #     functions.load_screen(screen, FPS, clock)
-        #     load_screen = False
-
+        vidas_text.draw(screen)
 
         #-------------detecting keyboards inputs-------------
         for event in pygame.event.get():
@@ -90,13 +88,17 @@ def main():
 
                 for casilla in casillas_group.sprites():
                     if casilla.rect.collidepoint(pygame.mouse.get_pos()):
-                        if set_number != 0:
-                            casilla.set_dato(set_number)
-
-
-        # cuadricula.set_dato(random.randint(1,9), 0, 0, 0, 0)
+                        if set_number != 0 and casilla.get_dato() == 0:
+                            if casilla.prev_data == set_number:
+                                casilla.set_dato(set_number)
+                            else:
+                                vidas -= 1
+        if vidas <= 0:
+            game = False
 
         cuadricula.update()
+        vidas_text.text = f"vidas: {vidas}"
+        vidas_text.update()
 
         pygame.display.flip() #Actualizar contenido en pantalla
 
