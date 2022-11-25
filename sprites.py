@@ -236,7 +236,7 @@ class Cuadricula(pygame.sprite.Sprite):
         self.image = functions.load_image(self.picture, self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
         self.rect = self.image.get_rect()
         self.mat_rand = np.array(list(str(generators.random_sudoku(avg_rank=100)))).reshape(9,9).astype(int)
-        self.mat_complete = self.mat_rand
+        self.mat_complete = []
 
         self.rect.centerx = pos[0]
         self.rect.centery = pos[1]
@@ -292,13 +292,13 @@ class Cuadricula(pygame.sprite.Sprite):
                 (self.matriz[i][j]).draw(surface)
                 
 
-    def posible_numero(self, fila, columna, numero):
+    def posible_numero(self, fila, columna, numero, mat):
         for i in range(0, 9):
-            if self.mat_rand[fila][i] == numero:
+            if mat[fila][i] == numero:
                 return False
 
         for i in range(0, 9):
-            if self.mat_rand[i][columna] == numero:
+            if mat[i][columna] == numero:
                 return False
 
         x_sub = (fila//3)*3
@@ -306,7 +306,7 @@ class Cuadricula(pygame.sprite.Sprite):
 
         for i in range(0,3):
             for j in range(0,3):
-                if self.mat_rand[x_sub + i][y_sub + j] == numero:
+                if mat[x_sub + i][y_sub + j] == numero:
                     return False
 
         return True
@@ -314,20 +314,23 @@ class Cuadricula(pygame.sprite.Sprite):
     def update(self):
         self.subcuadricula_group.update()
 
-    def sudoku_solver(self):
+    def sudoku_solver(self, mat):
         for filas in range(0,9):
             for columnas in range(0,9):
-                if self.mat_rand[filas][columnas] == 0:
+                if mat[filas][columnas] == 0:
                     for numero in range(1, 10):
-                        if(self.posible_numero(filas, columnas, numero)):
-                            self.mat_rand[filas][columnas] = numero
-                            self.sudoku_solver()
-                            self.mat_rand[filas][columnas] = 0
-                            self.mat_complete[filas][columnas] = numero
-                    return
+                        if(self.posible_numero(filas, columnas, numero, mat)):
+                            mat[filas][columnas] = numero
+                            posible_result = self.sudoku_solver(mat)
+                            if(type(posible_result) == np.ndarray):
+                                return posible_result
+                            else:
+                                mat[filas][columnas] = 0
+                    return None
+        return mat
     
     def generador(self):
-        self.sudoku_solver()
+        self.mat_complete = self.sudoku_solver(self.mat_rand)
         xs = 0
         x = 0
         y = 0
