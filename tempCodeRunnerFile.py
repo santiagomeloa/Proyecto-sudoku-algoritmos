@@ -1,0 +1,1 @@
+cuadricula = Cuadricula(3, 3, (WIDTH/2, HEIGHT/2))

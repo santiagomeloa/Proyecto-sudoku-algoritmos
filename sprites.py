@@ -45,8 +45,8 @@ class Numbers_casillas(pygame.sprite.Sprite):
         if(x < 0 or y < 0):
             raise ValueError ("No se reciben valores negativos")
         
-        if(number not in range(1,10)):
-            raise ValueError ("Solo se reciben valores del 1 al 9")
+        if(number not in range(0,10)):
+            raise ValueError ("Solo se reciben valores del 0 al 9")
 
         self.tam = WIDTH/50
         self.number = number
@@ -86,6 +86,9 @@ class Numbers_casillas(pygame.sprite.Sprite):
 class Casilla(pygame.sprite.Sprite):
     def __init__(self, dat:int = 0, pos:tuple= (0, 0, 0, 0, 0, 0)):
         super().__init__()
+
+        if(dat not in range(0,10)):
+            raise ValueError ("Solo se reciben valores del 0 al 9")
 
         self.prev_data = 0
         self.tam = WIDTH/20.2
@@ -324,6 +327,8 @@ class Cuadricula(pygame.sprite.Sprite):
         return True
 
     def sudoku_solver(self, mat):
+        if(type(mat) != np.ndarray):
+            raise TypeError("Ingrese una matriz")
         for filas in range(0,9):
             for columnas in range(0,9):
                 if mat[filas][columnas] == 0:
