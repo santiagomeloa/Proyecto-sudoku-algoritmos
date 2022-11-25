@@ -1,11 +1,9 @@
 import sys
-
 import pygame, random
 from pygame.locals import *
+from functions import WHITE, WIDTH, HEIGHT, load_image
+from sprites import Cuadricula, Numbers
 
-import functions
-from functions import HEIGHT, WHITE, WIDTH
-from sprites import Cuadricula, Numbers, Numbers_casillas
 
 FPS = 60
 
@@ -15,7 +13,7 @@ def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
     pygame.display.set_caption('Sudoku')
-    background_image = functions.load_image("Imagenes/Fondo.png", WIDTH, HEIGHT)
+    background_image = load_image("Imagenes/Fondo.png", WIDTH, HEIGHT)
     load_screen = True
 
     global set_number 
@@ -32,7 +30,6 @@ def main():
     casillas_group = cuadricula.get_casillas_group()
 
 
-    # numberrr= Numbers_casillas(WIDTH/2, HEIGHT/2, 5)
 
     #Objetos Numero
     one = Numbers(pygame.image.load('Imagenes/one.png').convert_alpha(), 200, (HEIGHT/1.25), 1)
@@ -70,7 +67,7 @@ def main():
         # numberrr.draw(screen)
 
         # if load_screen:
-        #     load_stage(FPS, clock)
+        #     functions.load_screen(screen, FPS, clock)
         #     load_screen = False
 
 

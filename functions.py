@@ -1,5 +1,6 @@
 import subprocess, pygame, platform, ctypes
 from pygame.locals import *
+import os
 
 WHITE = (255, 255, 255)
 
@@ -48,3 +49,21 @@ def countdown(num_of_secs):
     while num_of_secs:
         m, s = divmod(num_of_secs, 60)
         min_sec_format = '{:02d}:{:02d}'.format(m, s)
+
+# def load_images(path):
+#     images =  [load_image(path + os.sep + file_name,  WIDTH, HEIGHT) for file_name in sorted(os.listdir(path))]
+#     return images
+
+# def load_screen(screen, clock, FPS):
+#     images = load_images(path='Carga') 
+#     background = AnimatedBackground(position=(0, 0), images=images, delay = 0.03)
+#     all_sprites = pygame.sprite.Group(background)
+#     active = True
+
+#     while active:
+#         dt = clock.tick(FPS)
+#         all_sprites.update(dt)
+
+#         screen.blit(background.image, background.rect)
+
+#         all_sprites.draw(screen)
