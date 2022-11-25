@@ -39,7 +39,7 @@ def load_image(filename, width=None, height=None, transparent=False):   #coviert
         imagen = pygame.transform.scale(imagen, (width, height))
     imagen = imagen.convert()
 
-    if transparent:     #Si transparent es igaul a True, entonces se le quita el fondo a la imagen
+    if transparent:     #Si transparent es igual a True, entonces se le quita el fondo a la imagen
         color = pygame.PixelArray(imagen)
         imagen.set_colorkey(color[0, 0], RLEACCEL)
 

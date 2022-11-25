@@ -3,17 +3,15 @@ import pygame, random
 from pygame.locals import *
 from functions import WHITE, WIDTH, HEIGHT, load_image
 from sprites import Cuadricula, Numbers
-
-
 FPS = 60
-
-
 
 def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
-    pygame.display.set_caption('Sudoku')
+    icon = load_image("Imagenes/icono.png")
     background_image = load_image("Imagenes/Fondo.png", WIDTH, HEIGHT)
+    pygame.display.set_caption('Sudoku')
+    pygame.display.set_icon(icon)
     load_screen = True
 
     global set_number 
