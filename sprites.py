@@ -4,7 +4,7 @@ import functions
 from functions import WIDTH, HEIGHT, WHITE
 from dokusan import generators
 import numpy as np
-
+from copy import deepcopy
 
 #Clase numeros botones
 class Numbers(pygame.sprite.Sprite):
@@ -330,7 +330,7 @@ class Cuadricula(pygame.sprite.Sprite):
         return mat
     
     def generador(self):
-        self.mat_complete = self.sudoku_solver(self.mat_rand)
+        self.mat_complete = self.sudoku_solver(deepcopy(self.mat_rand))
         xs = 0
         x = 0
         y = 0
