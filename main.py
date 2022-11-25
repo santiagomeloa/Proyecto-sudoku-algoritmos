@@ -8,12 +8,13 @@ from sprites import Cuadricula, Numbers, Words
 FPS = 60
 
 color = (100,100,50)
-
 def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
-    pygame.display.set_caption('Sudoku')
+    icon = load_image("Imagenes/icono.png")
     background_image = load_image("Imagenes/Fondo.png", WIDTH, HEIGHT)
+    pygame.display.set_caption('Sudoku')
+    pygame.display.set_icon(icon)
     load_screen = True
     game = True
     global vidas
@@ -105,3 +106,4 @@ def main():
 if __name__ == '__main__':
     pygame.init()
     main()
+b

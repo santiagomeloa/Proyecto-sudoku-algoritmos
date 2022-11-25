@@ -29,7 +29,7 @@ WIDTH = screen_size()[0]
 HEIGHT = screen_size()[1] - (screen_size()[1]*0.06)
 
 
-def load_image(filename, width=None, height=None, transparent=False):   #covierte las imagenes a el formato aceptado por pygame y le da las dimenciones deceadas,
+def load_image(filename, width=None, height=None, transparent=False):   #covierte las imagenes a el formato aceptado por pygame y le da las dimensiones deseadas,
                                                                         #ademas de poder quitar el fondo
     try: imagen = pygame.image.load(filename)
     except pygame.error:
@@ -39,7 +39,7 @@ def load_image(filename, width=None, height=None, transparent=False):   #coviert
         imagen = pygame.transform.scale(imagen, (width, height))
     imagen = imagen.convert()
 
-    if transparent:     #Si transparent es igaul a True, entonces se le quita el fondo a la imagen
+    if transparent:     #Si transparent es igual a True, entonces se le quita el fondo a la imagen
         color = pygame.PixelArray(imagen)
         imagen.set_colorkey(color[0, 0], RLEACCEL)
 

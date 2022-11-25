@@ -458,3 +458,4 @@ class Words(pygame.sprite.Sprite, pygame.font.Font):
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
+
