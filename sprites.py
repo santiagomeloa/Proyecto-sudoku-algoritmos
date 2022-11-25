@@ -29,35 +29,39 @@ class Numbers(pygame.sprite.Sprite):
 
 #Clase numeros casillas
 class Numbers_casillas(pygame.sprite.Sprite):
-    def __init__(self, x, y, number):
+    def __init__(self, x, y, number:int=0):
         super().__init__()
         
-        self.tam = WIDTH/25
+        self.tam = WIDTH/20
         self.number = number
         self.num_images = {
             0:"Imagenes/WHITE.png",
-            1:"Imagenes/1.png",
-            2:"Imagenes/2.png",
-            3:"Imagenes/3.png",
-            4:"Imagenes/4.png",
-            5:"Imagenes/5.png",
-            6:"Imagenes/6.png",
-            7:"Imagenes/7.png",
-            8:"Imagenes/8.png",
-            9:"Imagenes/9.png",
+            1:"Imagenes/one.png",
+            2:"Imagenes/two.png",
+            3:"Imagenes/three.png",
+            4:"Imagenes/four.png",
+            5:"Imagenes/five.png",
+            6:"Imagenes/six.png",
+            7:"Imagenes/seven.png",
+            8:"Imagenes/eight.png",
+            9:"Imagenes/nine.png",
         }
         self.image = functions.load_image(self.num_images[self.number], self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
-        self.pos_x = x
-        self.pos_y = y
         self.rect = self.image.get_rect()
-        self.rect.topleft = ((self.pos_x, self.pos_y))
+        self.rect.centerx = x
+        self.rect.centery = y
+        # self.rect.topleft = ((self.pos_x, self.pos_y))
+
+    def set_number(self, num:int):
+        self.number = num
+        self.update()
 
     def get_number(self):
         return self.number
 
-    def set_number(self, num:int):
-        self.number = num
-        self.image = functions.load_image(self.num_images[self.number], self.tam, self.tam, True)
+    def update(self):
+        self.image = functions.load_image(self.num_images[self.number], self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
+
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
@@ -93,9 +97,14 @@ class Casilla(pygame.sprite.Sprite):
 
     def set_dato(self, dato:int):
         self._dato.set_number(dato)
+        self.update()
  
     def printc(self):
         print(self._dato, end= " ") #imprime el número y sigue en la misma linea
+
+    def update(self):
+        self._dato.update()
+        
 
     def draw(self, surface): #Método para mostrar el sprint en pantalla
                              # surface = pantalla
@@ -139,6 +148,8 @@ class Subcuadricula(pygame.sprite.Sprite):
     def __init__(self, fila=3, columna=3, pos:tuple = (0, 0, 0, 0, 0, 0)):
         super().__init__()
         # 220Numbers
+
+        self.li = [2,1,0]
         self.tam = WIDTH/7.2
         self.picture = 'Imagenes/Subcuadricula.png' # localización de la imagen a ser usada para la clase
         self.image = functions.load_image(self.picture, self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
@@ -199,7 +210,7 @@ class Subcuadricula(pygame.sprite.Sprite):
         return self.matriz[x][y].get_dato()
 
     def set_dato(self, num:int, x:int, y:int):
-        self.matriz[x][y].set_dato(num)
+        self.matriz[x][self.li[y]].set_dato(num)
       
 
     def insert(self, fila, columna, num):
@@ -212,6 +223,12 @@ class Subcuadricula(pygame.sprite.Sprite):
                 if self.matriz[i][j].getCasilla()==num:
                     return False
         return True
+
+    def update(self):
+        # for f in range(self.filas):
+        #     for c in range(self.columnas):
+        #         self.matriz[f][c].update()
+        self.casillas_group.update()
     
     def casillitas(self):
         lista=[] 
@@ -225,7 +242,7 @@ class Subcuadricula(pygame.sprite.Sprite):
                              # surface = pantalla
         surface.blit(self.image, self.rect)
         for i in range(self.filas):
-            for j in range(self.columnas):
+            for j in reversed(range(self.columnas)):
                 (self.matriz[i][j]).draw(surface)
 
         
@@ -234,11 +251,12 @@ class Cuadricula(pygame.sprite.Sprite):
     def __init__(self, filas= 3, columnas= 3, pos:tuple = (0, 0)):
         super().__init__()
 
+        self.li = [2,1,0]
         self.tam = WIDTH/2.4
         self.picture = 'Imagenes/Cuadricula.png' # localización de la imagen a ser usada para la clase
         self.image = functions.load_image(self.picture, self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
         self.rect = self.image.get_rect()
-        self.mat_rand = np.array(list(str(generators.random_sudoku(avg_rank=100)))).reshape(9,9).astype(np.int)
+        self.mat_rand = np.array(list(str(generators.random_sudoku(avg_rank=100)))).reshape(9,9).astype(int)
 
         self.rect.centerx = pos[0]
         self.rect.centery = pos[1]
@@ -283,54 +301,54 @@ class Cuadricula(pygame.sprite.Sprite):
         return self.matriz[x][y].get_dato(xs, ys)
 
     def set_dato(self, num:int, x:int, y:int, xs:int, ys:int):
-        self.matriz[x][y].set_dato(num, xs, ys)
+        self.matriz[x][self.li[y]].set_dato(num, xs, ys)
 
-    def fill_sudoku(self):
-        random_pos = (random.choice([x for x in range(self.filas)]), random.choice([y for y in range(self.columnas)]))
+    # def fill_sudoku(self):
+    #     random_pos = (random.choice([x for x in range(self.filas)]), random.choice([y for y in range(self.columnas)]))
 
-        self.set_dato(random.choice([d for d in range(1, 10)]), random_pos[0], random_pos[1], random_pos[1], random_pos[1])
-        print(self.get_dato(random_pos[0], random_pos[1], random_pos[0], random_pos[1])) 
+    #     self.set_dato(random.choice([d for d in range(1, 10)]), random_pos[0], random_pos[1], random_pos[1], random_pos[1])
+    #     print(self.get_dato(random_pos[0], random_pos[1], random_pos[0], random_pos[1])) 
 
     def draw(self, surface): #Método para mostrar el sprint en pantalla
                              # surface = pantalla
 
         surface.blit(self.image, self.rect)
         for i in range(self.filas):
-            for j in range(self.columnas):
+            for j in reversed(range(self.columnas)):
                 (self.matriz[i][j]).draw(surface)
                 
-    def revisar_fila (self, pos_cua, pos_sub, num):
-        for i in range(3):
-            sub_cuadricula=self.matriz[pos_cua][i]
-            for j in range(3):
+    # def revisar_fila (self, pos_cua, pos_sub, num):
+    #     for i in range(3):
+    #         sub_cuadricula=self.matriz[pos_cua][i]
+    #         for j in range(3):
                 
-                if sub_cuadricula.get_dato(pos_sub, j) == num:
-                    return False
-        return True
+    #             if sub_cuadricula.get_dato(pos_sub, j) == num:
+    #                 return False
+    #     return True
     
-    def revisar_columna(self, pos_cua, pos_sub, num):
-        for i in range(3):
-            sub_cuadricula=self.matriz[i][pos_cua]
-            for j in range(3):
+    # def revisar_columna(self, pos_cua, pos_sub, num):
+    #     for i in range(3):
+    #         sub_cuadricula=self.matriz[i][pos_cua]
+    #         for j in range(3):
             
-                if sub_cuadricula.get_dato(j, pos_sub) == num:
-                    return False
-        return True
+    #             if sub_cuadricula.get_dato(j, pos_sub) == num:
+    #                 return False
+    #     return True
                 
-    def revisar_sub_cua(self, posx, posy, num):
-        return self.matriz[posx][posy].revisar_sub(num)
+    # def revisar_sub_cua(self, posx, posy, num):
+    #     return self.matriz[posx][posy].revisar_sub(num)
 
-    def fill_fila(self, pos_cuax, pos_subx):
-        lista = [1,2,3,4,5,6,7,8,9]
-        for i in range(self.columnas):
-            sub_cuadricula=self.matriz[pos_cuax][i]
-            for j in range(self.columnas):
-                num = lista.pop(0)
-                while not revisar_columna(i, j, num) and not revisar_sub_cua(pos_cuax, i):
-                    lista.append(num)
-                    num = lista.pop(0)
+    # def fill_fila(self, pos_cuax, pos_subx):
+    #     lista = [1,2,3,4,5,6,7,8,9]
+    #     for i in range(self.columnas):
+    #         sub_cuadricula=self.matriz[pos_cuax][i]
+    #         for j in range(self.columnas):
+    #             num = lista.pop(0)
+    #             while not self.revisar_columna(i, j, num) and not self.revisar_sub_cua(pos_cuax, i):
+    #                 lista.append(num)
+    #                 num = lista.pop(0)
                     
-                sub_cuadricula.set_dato(num, pos_subx, j)
+    #             sub_cuadricula.set_dato(num, pos_subx, j)
 
     def posible_numero(self, fila, columna, numero):
         for i in range(0, 9):
@@ -351,6 +369,12 @@ class Cuadricula(pygame.sprite.Sprite):
 
         return True
 
+    def update(self):
+        # for f in range(self.filas):
+        #     for c in range(self.columnas):
+        #         self.matriz[f][c].update()
+        self.subcuadricula_group.update()
+
     def sudoku_solver(self):
         for filas in range(0,9):
             for columnas in range(0,9):
@@ -364,15 +388,35 @@ class Cuadricula(pygame.sprite.Sprite):
                 
     
     def generador(self):
+        self.sudoku_solver()
         xs = 0
-        ys = 0
+        x = 0
+        y = 0
+
+        print(self.mat_rand, end="\n")
+
+
         for f in range(9):
+            
+            if f<=2:
+                x = 0
+            elif 2<f<=5:
+                x = 1
+            elif 5<f<=8:
+                x = 2
+            
+
+
             for c in range(9):
-                self.set_dato(self.mat_rand[f][c], f%3, c%3, xs, ys)
-                if ys == 2:
-                    ys = 0
-                else:
-                    ys += 1
+
+                if c == 0 or c == 1 or c == 2:
+                    y = 0
+                elif c == 3 or c == 4 or c==5:
+                    y = 1
+                elif c == 6 or c == 7 or c == 8:
+                    y = 2
+                self.set_dato(self.mat_rand[f][c], x, y, xs, c%3)
+                print(self.mat_rand[f][c], x, y, xs, c%3, "c = ", c)
 
             if xs == 2:
                 xs = 0
