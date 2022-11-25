@@ -1,11 +1,12 @@
 import sys
 
-import pygame
+import pygame, random
 from pygame.locals import *
 
 import functions
 from functions import HEIGHT, WHITE, WIDTH
-from sprites import Cuadricula, Numbers
+from sprites import Cuadricula, Numbers, Numbers_casillas
+from stages import load_stage
 
 FPS = 60
 
@@ -16,6 +17,7 @@ def main():
     clock = pygame.time.Clock()
     pygame.display.set_caption('Sudoku')
     background_image = functions.load_image("Imagenes/Fondo.png", WIDTH, HEIGHT)
+    load_screen = True
 
     #-------------OBJETOS------------
 
@@ -23,6 +25,9 @@ def main():
     
     cuadricula = Cuadricula(3, 3, (WIDTH/2, HEIGHT/2))
     cuadricula.generador()
+
+
+    # numberrr= Numbers_casillas(WIDTH/2, HEIGHT/2, 5)
 
     #Objetos Numero
     one = Numbers(pygame.image.load('Imagenes/one.png').convert_alpha(), 500, (HEIGHT/1.134), "1")
@@ -52,11 +57,16 @@ def main():
     while True:
         clock.tick(FPS)
         screen.fill(WHITE)
-
+        
         screen.blit(background_image, (0, 0))
 
         cuadricula.draw(screen)
         numbers_group.draw(screen)
+        # numberrr.draw(screen)
+
+        # if load_screen:
+        #     load_stage(FPS, clock)
+        #     load_screen = False
 
 
         #-------------detecting keyboards inputs-------------
@@ -75,6 +85,10 @@ def main():
                     val = num.checkForInput(pygame.mouse.get_pos())
                     if(val != 0):
                         break
+
+        # cuadricula.set_dato(random.randint(1,9), 0, 0, 0, 0)
+
+        cuadricula.update()
 
         pygame.display.flip() #Actualizar contenido en pantalla
 
