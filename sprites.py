@@ -121,7 +121,6 @@ class Casilla(pygame.sprite.Sprite):
 class Subcuadricula(pygame.sprite.Sprite):
     def __init__(self, fila=3, columna=3, pos:tuple = (0, 0, 0, 0, 0, 0)):
         super().__init__()
-        # 220Numbers
 
         self.li = [2,1,0]
         self.tam = WIDTH/7.2
@@ -288,6 +287,10 @@ class Cuadricula(pygame.sprite.Sprite):
             for j in reversed(range(self.columnas)):
                 (self.matriz[i][j]).draw(surface)
                 
+    def update(self):
+        self.subcuadricula_group.update()
+
+    #Logica Sudoku
 
     def posible_numero(self, fila, columna, numero, mat):
         for i in range(0, 9):
@@ -307,9 +310,6 @@ class Cuadricula(pygame.sprite.Sprite):
                     return False
 
         return True
-
-    def update(self):
-        self.subcuadricula_group.update()
 
     def sudoku_solver(self, mat):
         for filas in range(0,9):
@@ -359,7 +359,6 @@ class Cuadricula(pygame.sprite.Sprite):
         xs = 0
         x = 0
         y = 0
-        # print(self.mat_rand, end="\n")
         print(self.mat_complete, end="\n")
         for f in range(9):
             

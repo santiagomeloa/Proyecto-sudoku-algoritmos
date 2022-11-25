@@ -35,8 +35,12 @@ def load_image(filename, width=None, height=None, transparent=False):   #coviert
     except pygame.error:
         raise SystemExit
 
-    if width != None or height != None:     #Si width o height son diferentes de "None", redefine el tamaño de la imagen con los parametros dados
+    if width != None and height == None or width == None and height != None:
+        raise TypeError ("No se puede convertir solo una dimensión de la imagen")
+
+    if width != None and height != None:     #Si width o height son diferentes de "None", redefine el tamaño de la imagen con los parametros dados
         imagen = pygame.transform.scale(imagen, (width, height))
+    
     imagen = imagen.convert()
 
     if transparent:     #Si transparent es igual a True, entonces se le quita el fondo a la imagen
