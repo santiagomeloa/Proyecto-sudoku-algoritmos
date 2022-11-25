@@ -32,7 +32,7 @@ class Numbers_casillas(pygame.sprite.Sprite):
     def __init__(self, x, y, number:int=0):
         super().__init__()
         
-        self.tam = WIDTH/20
+        self.tam = WIDTH/50
         self.number = number
         self.num_images = {
             0:"Imagenes/WHITE.png",
