@@ -375,9 +375,6 @@ class Cuadricula(pygame.sprite.Sprite):
         return True
 
     def update(self):
-        # for f in range(self.filas):
-        #     for c in range(self.columnas):
-        #         self.matriz[f][c].update()
         self.subcuadricula_group.update()
 
     def sudoku_solver(self):
@@ -390,6 +387,7 @@ class Cuadricula(pygame.sprite.Sprite):
                             self.sudoku_solver()
                             self.mat_rand[filas][columnas] = 0
                     return
+        self.mat_rand = self.mat_rand
                 
     
     def generador(self):
@@ -414,7 +412,6 @@ class Cuadricula(pygame.sprite.Sprite):
                 elif c == 6 or c == 7 or c == 8:
                     y = 2
                 self.set_dato(self.mat_rand[f][c], x, y, xs, c%3)
-                # print(self.mat_rand[f][c], x, y, xs, c%3, "c = ", c)
             if xs == 2:
                 xs = 0
             else:
