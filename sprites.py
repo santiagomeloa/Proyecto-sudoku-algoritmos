@@ -11,7 +11,8 @@ class Numbers(pygame.sprite.Sprite):
     def __init__(self, image, x, y, number:int):
         super().__init__()
 
-        self.image = pygame.transform.scale(image, (100, 100))
+        self.tam = WIDTH/13.66
+        self.image = pygame.transform.scale(image, (self.tam, self.tam))
         self.pos_x = x
         self.pos_y = y
         self.number = number
@@ -53,7 +54,6 @@ class Numbers_casillas(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = x
         self.rect.centery = y
-        # self.rect.topleft = ((self.pos_x, self.pos_y))
 
     def set_number(self, num:int):
         self.number = num
@@ -112,13 +112,7 @@ class Casilla(pygame.sprite.Sprite):
     def draw(self, surface): #Método para mostrar el sprint en pantalla
                              # surface = pantalla
         surface.blit(self.image, self.rect)
-        self._dato.draw(surface)
-
-    def put_number(self, position, number):
-        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            self.set_dato(number)
-
-           
+        self._dato.draw(surface)        
 
 #class subcuadricula--------------------------------------------------
 class Subcuadricula(pygame.sprite.Sprite):
