@@ -6,7 +6,6 @@ from pygame.locals import *
 import functions
 from functions import HEIGHT, WHITE, WIDTH
 from sprites import Cuadricula, Numbers, Numbers_casillas
-from stages import load_stage
 
 FPS = 60
 
@@ -19,6 +18,10 @@ def main():
     background_image = functions.load_image("Imagenes/Fondo.png", WIDTH, HEIGHT)
     load_screen = True
 
+    global set_number 
+
+    set_number = 0
+
     #-------------OBJETOS------------
 
     numbers_group = pygame.sprite.Group()
@@ -26,19 +29,21 @@ def main():
     cuadricula = Cuadricula(3, 3, (WIDTH/2, HEIGHT/2))
     cuadricula.generador()
 
+    casillas_group = cuadricula.get_casillas_group()
+
 
     # numberrr= Numbers_casillas(WIDTH/2, HEIGHT/2, 5)
 
     #Objetos Numero
-    one = Numbers(pygame.image.load('Imagenes/one.png').convert_alpha(), 500, (HEIGHT/1.134), "1")
-    two = Numbers(pygame.image.load('Imagenes/two.png').convert_alpha(), 600, (HEIGHT/1.134), "2")
-    three = Numbers(pygame.image.load('Imagenes/three.png').convert_alpha(), 700, (HEIGHT/1.134), "3")
-    four = Numbers(pygame.image.load('Imagenes/four.png').convert_alpha(), 800, (HEIGHT/1.134), "4")
-    five = Numbers(pygame.image.load('Imagenes/five.png').convert_alpha(), 900, (HEIGHT/1.134), "5")
-    six = Numbers(pygame.image.load('Imagenes/six.png').convert_alpha(), 1000, (HEIGHT/1.134), "6")
-    seven = Numbers(pygame.image.load('Imagenes/seven.png').convert_alpha(), 1100, (HEIGHT/1.134), "7")
-    eight = Numbers(pygame.image.load('Imagenes/eight.png').convert_alpha(), 1200, (HEIGHT/1.134), "8")
-    nine = Numbers(pygame.image.load('Imagenes/nine.png').convert_alpha(), 1300, (HEIGHT/1.134), "9")
+    one = Numbers(pygame.image.load('Imagenes/one.png').convert_alpha(), 500, (HEIGHT/1.134), 1)
+    two = Numbers(pygame.image.load('Imagenes/two.png').convert_alpha(), 600, (HEIGHT/1.134), 2)
+    three = Numbers(pygame.image.load('Imagenes/three.png').convert_alpha(), 700, (HEIGHT/1.134), 3)
+    four = Numbers(pygame.image.load('Imagenes/four.png').convert_alpha(), 800, (HEIGHT/1.134), 4)
+    five = Numbers(pygame.image.load('Imagenes/five.png').convert_alpha(), 900, (HEIGHT/1.134), 5)
+    six = Numbers(pygame.image.load('Imagenes/six.png').convert_alpha(), 1000, (HEIGHT/1.134), 6)
+    seven = Numbers(pygame.image.load('Imagenes/seven.png').convert_alpha(), 1100, (HEIGHT/1.134), 7)
+    eight = Numbers(pygame.image.load('Imagenes/eight.png').convert_alpha(), 1200, (HEIGHT/1.134), 8)
+    nine = Numbers(pygame.image.load('Imagenes/nine.png').convert_alpha(), 1300, (HEIGHT/1.134), 9)
 
     numbers_group.add(one)
     numbers_group.add(two)
@@ -78,13 +83,19 @@ def main():
                 if event.key == K_ESCAPE:
                     sys.exit(0)
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
 
-                num_list = {one, two, three, four, five, six, seven, eight, nine}
-                for num in num_list:
-                    val = num.checkForInput(pygame.mouse.get_pos())
-                    if(val != 0):
+            if event.type == MOUSEBUTTONDOWN and event.button == 1:
+
+                for num in numbers_group.sprites():
+                    if num.rect.collidepoint(pygame.mouse.get_pos()):
+                        set_number = num.get_number()
                         break
+
+                for casilla in casillas_group.sprites():
+                    if casilla.rect.collidepoint(pygame.mouse.get_pos()):
+                        if set_number != 0:
+                            casilla.set_dato(set_number)
+
 
         # cuadricula.set_dato(random.randint(1,9), 0, 0, 0, 0)
 

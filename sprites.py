@@ -8,7 +8,7 @@ import numpy as np
 
 #Clase numeros botones
 class Numbers(pygame.sprite.Sprite):
-    def __init__(self, image, x, y, number):
+    def __init__(self, image, x, y, number:int):
         super().__init__()
 
         self.image = pygame.transform.scale(image, (100, 100))
@@ -17,6 +17,9 @@ class Numbers(pygame.sprite.Sprite):
         self.number = number
         self.rect = self.image.get_rect()
         self.rect.topleft = ((self.pos_x, self.pos_y))
+
+    def get_number(self):
+        return self.number
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
@@ -237,6 +240,8 @@ class Subcuadricula(pygame.sprite.Sprite):
                 lista.append(self.matriz[i][j])
         return lista
     
+    def get_casillas_group(self):
+        return self.casillas_group
 
     def draw(self, surface): #Método para mostrar el sprint en pantalla
                              # surface = pantalla
@@ -392,10 +397,7 @@ class Cuadricula(pygame.sprite.Sprite):
         xs = 0
         x = 0
         y = 0
-
         print(self.mat_rand, end="\n")
-
-
         for f in range(9):
             
             if f<=2:
@@ -404,11 +406,7 @@ class Cuadricula(pygame.sprite.Sprite):
                 x = 1
             elif 5<f<=8:
                 x = 2
-            
-
-
             for c in range(9):
-
                 if c == 0 or c == 1 or c == 2:
                     y = 0
                 elif c == 3 or c == 4 or c==5:
@@ -416,9 +414,18 @@ class Cuadricula(pygame.sprite.Sprite):
                 elif c == 6 or c == 7 or c == 8:
                     y = 2
                 self.set_dato(self.mat_rand[f][c], x, y, xs, c%3)
-                print(self.mat_rand[f][c], x, y, xs, c%3, "c = ", c)
-
+                # print(self.mat_rand[f][c], x, y, xs, c%3, "c = ", c)
             if xs == 2:
                 xs = 0
             else:
                 xs += 1
+    def get_casillas_group(self):
+        casillas_group = pygame.sprite.Group()
+
+        for f in range(self.filas):
+            for c in range(self.columnas):
+                group = self.matriz[f][c].get_casillas_group().sprites()
+                for sprite in group:
+                    casillas_group.add(sprite)
+
+        return casillas_group
