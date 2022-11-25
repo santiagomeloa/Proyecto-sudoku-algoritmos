@@ -11,6 +11,12 @@ class Numbers(pygame.sprite.Sprite):
     def __init__(self, image, x, y, number:int):
         super().__init__()
 
+        if(x < 0 or y < 0):
+            raise ValueError ("No se reciben valores negativos")
+        
+        if(number not in range(1,10)):
+            raise ValueError ("Solo se reciben valores del 1 al 9")
+
         self.tam = WIDTH/13.66
         self.image = pygame.transform.scale(image, (self.tam, self.tam))
         self.pos_x = x
@@ -36,6 +42,12 @@ class Numbers_casillas(pygame.sprite.Sprite):
     def __init__(self, x, y, number:int=0):
         super().__init__()
         
+        if(x < 0 or y < 0):
+            raise ValueError ("No se reciben valores negativos")
+        
+        if(number not in range(1,10)):
+            raise ValueError ("Solo se reciben valores del 1 al 9")
+
         self.tam = WIDTH/50
         self.number = number
         self.num_images = {
@@ -72,7 +84,7 @@ class Numbers_casillas(pygame.sprite.Sprite):
 
 #class casilla---------------------------------------------------------
 class Casilla(pygame.sprite.Sprite):
-    def __init__(self, dat:int= 0, pos:tuple= (0, 0, 0, 0, 0, 0)):
+    def __init__(self, dat:int = 0, pos:tuple= (0, 0, 0, 0, 0, 0)):
         super().__init__()
 
         self.prev_data = 0
