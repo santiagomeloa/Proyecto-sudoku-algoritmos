@@ -72,7 +72,7 @@ class Numbers_casillas(pygame.sprite.Sprite):
 
 #class casilla---------------------------------------------------------
 class Casilla(pygame.sprite.Sprite):
-    def __init__(self, dat:int= 2, pos:tuple= (0, 0, 0, 0, 0, 0)):
+    def __init__(self, dat:int= 0, pos:tuple= (0, 0, 0, 0, 0, 0)):
         super().__init__()
 
         self.prev_data = 0
