@@ -75,6 +75,7 @@ class Casilla(pygame.sprite.Sprite):
     def __init__(self, dat:int= 2, pos:tuple= (0, 0, 0, 0, 0, 0)):
         super().__init__()
 
+        self.prev_data = 0
         self.tam = WIDTH/20.2
         self.picture = 'Imagenes/Casilla.png' # localización de la imagen a ser usada para la clase
         self.image = functions.load_image(self.picture, self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
@@ -99,6 +100,8 @@ class Casilla(pygame.sprite.Sprite):
         return self._dato.get_number()
 
     def set_dato(self, dato:int):
+        if self.prev_data == 0 and dato == 0 and self._dato.get_number() != 0:
+            self.prev_data = self._dato.get_number()
         self._dato.set_number(dato)
         self.update()
  
@@ -323,12 +326,40 @@ class Cuadricula(pygame.sprite.Sprite):
                     return None
         return mat
     
+    def erase(self):
+        desition = [True, False, False, False]
+
+        xs = 0
+        x = 0
+        y = 0
+        for f in range(9):
+            
+            if f<=2:
+                x = 0
+            elif 2<f<=5:
+                x = 1
+            elif 5<f<=8:
+                x = 2
+            for c in range(9):
+                if c == 0 or c == 1 or c == 2:
+                    y = 0
+                elif c == 3 or c == 4 or c==5:
+                    y = 1
+                elif c == 6 or c == 7 or c == 8:
+                    y = 2
+                if random.choice(desition):
+                    self.set_dato(0, x, y, xs, c%3)
+            if xs == 2:
+                xs = 0
+            else:
+                xs += 1
+
     def generador(self):
         self.mat_complete = self.sudoku_solver(deepcopy(self.mat_rand))
         xs = 0
         x = 0
         y = 0
-        print(self.mat_rand, end="\n")
+        # print(self.mat_rand, end="\n")
         print(self.mat_complete, end="\n")
         for f in range(9):
             
@@ -345,11 +376,14 @@ class Cuadricula(pygame.sprite.Sprite):
                     y = 1
                 elif c == 6 or c == 7 or c == 8:
                     y = 2
-                self.set_dato(self.mat_rand[f][c], x, y, xs, c%3)
+                self.set_dato(self.mat_complete[f][c], x, y, xs, c%3)
             if xs == 2:
                 xs = 0
             else:
                 xs += 1
+        self.erase()
+
+
     def get_casillas_group(self):
         casillas_group = pygame.sprite.Group()
 
@@ -378,3 +412,44 @@ class AnimatedBackground(pygame.sprite.Sprite):
         if self.current_time >= self.animation_time:
             self.current_time = 0
             self.image = next(self.images)
+
+
+class Words(pygame.sprite.Sprite, pygame.font.Font):
+    def __init__(self, text: str, size: int, color, location, multicolor=False):
+        super().__init__()
+        
+        self.font = pygame.font.Font('Imagenes/04B_30__.TTF', size)
+        self._text = text
+        self._color = color
+        self.multicolor = multicolor
+        self.image = self.font.render(text, True, self.color)
+        self.rect = self.image.get_rect()
+        self.rect.centerx = location[0]
+        self.rect.centery = location[1]
+
+    #--------setters and getters---------
+    @property
+    def text(self):
+        return self._text
+
+    @text.setter
+    def text(self, text):
+        self._text = text
+
+    @property
+    def color(self):
+        return self._color
+    
+    @color.setter
+    def color(self, color):
+        self._color = color
+
+
+    def update(self):
+        self.image = self.font.render(self.text, 1 , self.color)
+        return self.image
+
+
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
+
