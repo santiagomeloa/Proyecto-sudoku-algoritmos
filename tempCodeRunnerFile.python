@@ -1,0 +1,39 @@
+from dokusan import generators
+import numpy as np
+
+mat = np.array(list(str(generators.random_sudoku(avg_rank=100)))).reshape(9,9).astype(int)
+
+def posible_numero(self, fila, columna, numero):
+    global mat
+    for i in range(0, 9):
+        if mat[fila][i] == numero:
+            return False
+
+    for i in range(0, 9):
+        if mat[i][columna] == numero:
+            return False
+
+    x_sub = (fila//3)*3
+    y_sub = (columna//3)*3
+
+    for i in range(0,3):
+        for j in range(0,3):
+            if mat[x_sub + i][y_sub + j] == numero:
+                return False
+
+    return True
+
+def sudoku_solver(self):
+    global mat
+    for filas in range(0,9):
+        for columnas in range(0,9):
+            if mat[filas][columnas] == 0:
+                for numero in range(1, 10):
+                    if(posible_numero(filas, columnas, numero)):
+                        mat[filas][columnas] = numero
+                        sudoku_solver()
+                        mat[filas][columnas] = 0
+                return
+    print(mat)
+
+sudoku_solver()

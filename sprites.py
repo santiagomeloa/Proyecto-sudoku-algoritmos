@@ -214,7 +214,6 @@ class Subcuadricula(pygame.sprite.Sprite):
 
     def set_dato(self, num:int, x:int, y:int):
         self.matriz[x][self.li[y]].set_dato(num)
-      
 
     def insert(self, fila, columna, num):
         c = self.matriz[fila][columna]
@@ -262,7 +261,7 @@ class Cuadricula(pygame.sprite.Sprite):
         self.image = functions.load_image(self.picture, self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
         self.rect = self.image.get_rect()
         self.mat_rand = np.array(list(str(generators.random_sudoku(avg_rank=100)))).reshape(9,9).astype(int)
-
+        self.mat_solved = []
         self.rect.centerx = pos[0]
         self.rect.centery = pos[1]
         self.rect.top = 0
@@ -355,13 +354,13 @@ class Cuadricula(pygame.sprite.Sprite):
                     
     #             sub_cuadricula.set_dato(num, pos_subx, j)
 
-    def posible_numero(self, fila, columna, numero):
+    def posible_numero(self, fila, columna, numero, mat):
         for i in range(0, 9):
-            if self.mat_rand[fila][i] == numero:
+            if mat[fila][i] == numero:
                 return False
 
         for i in range(0, 9):
-            if self.mat_rand[i][columna] == numero:
+            if mat[i][columna] == numero:
                 return False
 
         x_sub = (fila//3)*3
@@ -369,35 +368,35 @@ class Cuadricula(pygame.sprite.Sprite):
 
         for i in range(0,3):
             for j in range(0,3):
-                if self.mat_rand[x_sub + i][y_sub + j] == numero:
+                if mat[x_sub + i][y_sub + j] == numero:
                     return False
 
         return True
 
     def update(self):
-        # for f in range(self.filas):
-        #     for c in range(self.columnas):
-        #         self.matriz[f][c].update()
         self.subcuadricula_group.update()
 
-    def sudoku_solver(self):
+    def sudoku_solver(self, mat):
         for filas in range(0,9):
             for columnas in range(0,9):
-                if self.mat_rand[filas][columnas] == 0:
+                if mat[filas][columnas] == 0:
                     for numero in range(1, 10):
-                        if(self.posible_numero(filas, columnas, numero)):
-                            self.mat_rand[filas][columnas] = numero
-                            self.sudoku_solver()
-                            self.mat_rand[filas][columnas] = 0
-                    return
-                
-    
+                        if(self.posible_numero(filas, columnas, numero, mat)):
+                            mat[filas][columnas] = numero
+                            posible_result = self.sudoku_solver(mat)
+                            if(type(posible_result) == np.ndarray):
+                                return posible_result
+                            else:
+                                mat[filas][columnas] = 0
+                    return None
+        return mat
+
     def generador(self):
-        self.sudoku_solver()
+        self.mat_solved = self.sudoku_solver(self.mat_rand)
         xs = 0
         x = 0
         y = 0
-        print(self.mat_rand, end="\n")
+        print(self.mat_solved, end="\n")
         for f in range(9):
             
             if f<=2:
@@ -414,7 +413,6 @@ class Cuadricula(pygame.sprite.Sprite):
                 elif c == 6 or c == 7 or c == 8:
                     y = 2
                 self.set_dato(self.mat_rand[f][c], x, y, xs, c%3)
-                # print(self.mat_rand[f][c], x, y, xs, c%3, "c = ", c)
             if xs == 2:
                 xs = 0
             else:
