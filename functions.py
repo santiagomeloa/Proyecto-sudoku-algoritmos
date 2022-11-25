@@ -25,7 +25,7 @@ def screen_size(): # Obtine la resolución de la pantalla dependiendo del sistem
 
 #-------Tamaño de la pantalla------
 WIDTH = screen_size()[0]
-HEIGHT = screen_size()[1]
+HEIGHT = screen_size()[1] - (screen_size()[1]*0.06)
 
 
 def load_image(filename, width=None, height=None, transparent=False):   #covierte las imagenes a el formato aceptado por pygame y le da las dimenciones deceadas,
@@ -43,3 +43,8 @@ def load_image(filename, width=None, height=None, transparent=False):   #coviert
         imagen.set_colorkey(color[0, 0], RLEACCEL)
 
     return imagen
+
+def countdown(num_of_secs):
+    while num_of_secs:
+        m, s = divmod(num_of_secs, 60)
+        min_sec_format = '{:02d}:{:02d}'.format(m, s)
