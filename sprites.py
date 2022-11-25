@@ -1,7 +1,7 @@
 import pygame, random
 from pygame.locals import *
 import functions
-from functions import HEIGHT, WHITE, WIDTH
+from functions import WIDTH, HEIGHT, WHITE
 from dokusan import generators
 import numpy as np
 
@@ -118,33 +118,7 @@ class Casilla(pygame.sprite.Sprite):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
             self.set_dato(number)
 
-            # if(number == 1):
-            #     one = Numbers_casillas(pygame.image.load('Imagenes/1.png').convert_alpha(), self.pos_x, self.pos_y, "1")
-            #     one.draw(screen)
-            # if(number == 2):
-            #     two = Numbers_casillas(pygame.image.load('Imagenes/2.png').convert_alpha(), self.pos_x, self.pos_y, "2")
-            #     two.draw(screen)
-            # if(number == 3):
-            #     three = Numbers_casillas(pygame.image.load('Imagenes/3.png').convert_alpha(), self.pos_x, self.pos_y, "3")
-            #     three.draw(screen)
-            # if(number == 4):
-            #     four = Numbers_casillas(pygame.image.load('Imagenes/4.png').convert_alpha(), self.pos_x, self.pos_y, "4")
-            #     four.draw(screen)
-            # if(number == 5):
-            #     five = Numbers_casillas(pygame.image.load('Imagenes/5.png').convert_alpha(), self.pos_x, self.pos_y, "5")
-            #     five.draw(screen)
-            # if(number == 6):
-            #     six = Numbers_casillas(pygame.image.load('Imagenes/6.png').convert_alpha(), self.pos_x, self.pos_y, "6")
-            #     six.draw(screen)
-            # if(number == 7):
-            #     seven = Numbers_casillas(pygame.image.load('Imagenes/7.png').convert_alpha(), self.pos_x, self.pos_y, "7")
-            #     seven.draw(screen)
-            # if(number == 8):
-            #     eight = Numbers_casillas(pygame.image.load('Imagenes/8.png').convert_alpha(), self.pos_x, self.pos_y, "8")
-            #     eight.draw(screen)
-            # if(number == 9):
-            #     nine = Numbers_casillas(pygame.image.load('Imagenes/9.png').convert_alpha(), self.pos_x, self.pos_y, "9")
-            #     nine.draw(screen)
+           
 
 #class subcuadricula--------------------------------------------------
 class Subcuadricula(pygame.sprite.Sprite):
@@ -262,6 +236,7 @@ class Cuadricula(pygame.sprite.Sprite):
         self.image = functions.load_image(self.picture, self.tam, self.tam, True) # convertir la imagen en un formato aceptado por pygame para ser tratado
         self.rect = self.image.get_rect()
         self.mat_rand = np.array(list(str(generators.random_sudoku(avg_rank=100)))).reshape(9,9).astype(int)
+        self.mat_complete = self.mat_rand
 
         self.rect.centerx = pos[0]
         self.rect.centery = pos[1]
@@ -308,12 +283,6 @@ class Cuadricula(pygame.sprite.Sprite):
     def set_dato(self, num:int, x:int, y:int, xs:int, ys:int):
         self.matriz[x][self.li[y]].set_dato(num, xs, ys)
 
-    # def fill_sudoku(self):
-    #     random_pos = (random.choice([x for x in range(self.filas)]), random.choice([y for y in range(self.columnas)]))
-
-    #     self.set_dato(random.choice([d for d in range(1, 10)]), random_pos[0], random_pos[1], random_pos[1], random_pos[1])
-    #     print(self.get_dato(random_pos[0], random_pos[1], random_pos[0], random_pos[1])) 
-
     def draw(self, surface): #Método para mostrar el sprint en pantalla
                              # surface = pantalla
 
@@ -322,38 +291,6 @@ class Cuadricula(pygame.sprite.Sprite):
             for j in reversed(range(self.columnas)):
                 (self.matriz[i][j]).draw(surface)
                 
-    # def revisar_fila (self, pos_cua, pos_sub, num):
-    #     for i in range(3):
-    #         sub_cuadricula=self.matriz[pos_cua][i]
-    #         for j in range(3):
-                
-    #             if sub_cuadricula.get_dato(pos_sub, j) == num:
-    #                 return False
-    #     return True
-    
-    # def revisar_columna(self, pos_cua, pos_sub, num):
-    #     for i in range(3):
-    #         sub_cuadricula=self.matriz[i][pos_cua]
-    #         for j in range(3):
-            
-    #             if sub_cuadricula.get_dato(j, pos_sub) == num:
-    #                 return False
-    #     return True
-                
-    # def revisar_sub_cua(self, posx, posy, num):
-    #     return self.matriz[posx][posy].revisar_sub(num)
-
-    # def fill_fila(self, pos_cuax, pos_subx):
-    #     lista = [1,2,3,4,5,6,7,8,9]
-    #     for i in range(self.columnas):
-    #         sub_cuadricula=self.matriz[pos_cuax][i]
-    #         for j in range(self.columnas):
-    #             num = lista.pop(0)
-    #             while not self.revisar_columna(i, j, num) and not self.revisar_sub_cua(pos_cuax, i):
-    #                 lista.append(num)
-    #                 num = lista.pop(0)
-                    
-    #             sub_cuadricula.set_dato(num, pos_subx, j)
 
     def posible_numero(self, fila, columna, numero):
         for i in range(0, 9):
@@ -386,9 +323,8 @@ class Cuadricula(pygame.sprite.Sprite):
                             self.mat_rand[filas][columnas] = numero
                             self.sudoku_solver()
                             self.mat_rand[filas][columnas] = 0
+                            self.mat_complete[filas][columnas] = numero
                     return
-        self.mat_rand = self.mat_rand
-                
     
     def generador(self):
         self.sudoku_solver()
@@ -396,6 +332,7 @@ class Cuadricula(pygame.sprite.Sprite):
         x = 0
         y = 0
         print(self.mat_rand, end="\n")
+        print(self.mat_complete, end="\n")
         for f in range(9):
             
             if f<=2:
@@ -426,3 +363,21 @@ class Cuadricula(pygame.sprite.Sprite):
                     casillas_group.add(sprite)
 
         return casillas_group
+
+
+class AnimatedBackground(pygame.sprite.Sprite):
+    def __init__(self, position, images, delay):
+        super(AnimatedBackground, self).__init__()
+
+        self.images = itertools.cycle(images)
+        self.image = next(self.images)
+        self.rect = pygame.Rect(position,  self.image.get_rect().size)
+
+        self.animation_time = delay
+        self.current_time = 0
+
+    def update(self, dt):
+        self.current_time += dt
+        if self.current_time >= self.animation_time:
+            self.current_time = 0
+            self.image = next(self.images)
